@@ -1,10 +1,12 @@
 package com.evansitzes.coviddatacollector.service;
 
+import com.evansitzes.coviddatacollector.CovidDataDTO;
 import com.evansitzes.coviddatacollector.client.CdcCovidGeoClient;
 import com.evansitzes.coviddatacollector.model.CdcCovidGeo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -12,8 +14,11 @@ public class DataCollectionService {
 
     private final CdcCovidGeoClient cdcCovidGeoClient;
 
-    public DataCollectionService(final CdcCovidGeoClient cdcCovidGeoClient) {
+    private final KafkaProducerService kafkaProducerService;
+
+    public DataCollectionService(final CdcCovidGeoClient cdcCovidGeoClient, final KafkaProducerService kafkaProducerService) {
         this.cdcCovidGeoClient = cdcCovidGeoClient;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     public void collect() {
@@ -23,6 +28,14 @@ public class DataCollectionService {
         log.info("collected data:");
         log.info(data.toString());
 
-        // TODO process data
+        // TODO transform data
+
+        final List<CovidDataDTO> covidDataDTO = data.stream().map(x -> CovidDataDTO.builder()
+                .ageGroup(x.getAgeGroup())
+                .resCounty(x.getResCounty())
+                .caseMonth(x.getCaseMonth())
+                .build()).toList();
+
+        kafkaProducerService.send("data-topic", UUID.randomUUID().toString(), covidDataDTO);
     }
 }
