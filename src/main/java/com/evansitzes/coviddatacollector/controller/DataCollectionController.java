@@ -15,7 +15,7 @@ public class DataCollectionController {
         this.dataCollectionService = dataCollectionService;
     }
 
-    @PostMapping("/api/trigger-collection")
+    @PostMapping("/api/collect")
     public void triggerDataCollection() {
         dataCollectionService.collect();
     }

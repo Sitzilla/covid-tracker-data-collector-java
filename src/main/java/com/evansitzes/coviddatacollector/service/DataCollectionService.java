@@ -1,6 +1,6 @@
 package com.evansitzes.coviddatacollector.service;
 
-import com.evansitzes.coviddatacollector.CdcCovidGeoClient;
+import com.evansitzes.coviddatacollector.client.CdcCovidGeoClient;
 import com.evansitzes.coviddatacollector.model.CdcCovidGeo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,9 @@ public class DataCollectionService {
     public void collect() {
         log.info("collecting data");
         final List<CdcCovidGeo> data = cdcCovidGeoClient.getAllData(3, 0, "case_month", "2020-02");
+
+        log.info("collected data:");
+        log.info(data.toString());
 
         // TODO process data
     }

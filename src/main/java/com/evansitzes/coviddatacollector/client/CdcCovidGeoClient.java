@@ -1,4 +1,4 @@
-package com.evansitzes.coviddatacollector;
+package com.evansitzes.coviddatacollector.client;
 
 import com.evansitzes.coviddatacollector.config.FeignClientConfig;
 import com.evansitzes.coviddatacollector.model.CdcCovidGeo;
