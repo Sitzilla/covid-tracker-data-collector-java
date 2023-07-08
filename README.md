@@ -1,3 +1,3 @@
 # covid-tracker-data-collector
 
-WIP Service
+WIP Java Service
